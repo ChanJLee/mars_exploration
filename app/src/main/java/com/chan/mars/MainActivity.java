@@ -32,4 +32,6 @@ public class MainActivity extends AppCompatActivity {
 	 * which is packaged with this application.
 	 */
 	public native String stringFromJNI();
+
+	public native void read(byte[] data, int len);
 }
