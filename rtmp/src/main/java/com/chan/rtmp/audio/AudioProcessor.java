@@ -3,13 +3,12 @@ package com.chan.rtmp.audio;
 import android.media.AudioRecord;
 
 import com.chan.rtmp.configuration.AudioConfiguration;
+import com.laifeng.sopcastsdk.audio.AudioResample;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 import java.util.Arrays;
-
-import com.laifeng.sopcastsdk.audio.AudioResample;
 
 public class AudioProcessor extends Thread {
 	private volatile boolean mPauseFlag;

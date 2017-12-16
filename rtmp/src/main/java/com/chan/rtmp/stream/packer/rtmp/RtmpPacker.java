@@ -8,10 +8,10 @@ import com.chan.rtmp.stream.packer.flv.FlvPackerHelper;
 
 import java.nio.ByteBuffer;
 
-import static com.wenyu.rtmp.stream.packer.flv.FlvPackerHelper.AUDIO_HEADER_SIZE;
-import static com.wenyu.rtmp.stream.packer.flv.FlvPackerHelper.AUDIO_SPECIFIC_CONFIG_SIZE;
-import static com.wenyu.rtmp.stream.packer.flv.FlvPackerHelper.VIDEO_HEADER_SIZE;
-import static com.wenyu.rtmp.stream.packer.flv.FlvPackerHelper.VIDEO_SPECIFIC_CONFIG_EXTEND_SIZE;
+import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.AUDIO_HEADER_SIZE;
+import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.AUDIO_SPECIFIC_CONFIG_SIZE;
+import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.VIDEO_HEADER_SIZE;
+import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.VIDEO_SPECIFIC_CONFIG_EXTEND_SIZE;
 
 public class RtmpPacker implements Packer, AnnexbHelper.AnnexbNaluListener {
 
