@@ -1,7 +1,7 @@
 package com.chan.rtmp.controller.video;
 
-import com.wenyu.rtmp.configuration.VideoConfiguration;
-import com.wenyu.rtmp.video.OnVideoEncodeListener;
+import com.chan.rtmp.configuration.VideoConfiguration;
+import com.chan.rtmp.video.OnVideoEncodeListener;
 
 public interface IVideoController {
     void start();

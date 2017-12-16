@@ -1,6 +1,6 @@
 package com.chan.rtmp.stream.sender.rtmp.io;
 
-import com.wenyu.rtmp.stream.sender.rtmp.packets.ChunkHeader;
+import com.chan.rtmp.stream.sender.rtmp.packets.ChunkHeader;
 
 import java.util.HashMap;
 import java.util.Map;

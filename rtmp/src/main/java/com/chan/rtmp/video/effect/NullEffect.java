@@ -2,7 +2,7 @@ package com.chan.rtmp.video.effect;
 
 import android.content.Context;
 
-import com.wenyu.rtmp.video.GLSLFileUtils;
+import com.chan.rtmp.video.GLSLFileUtils;
 
 public class NullEffect extends Effect{
     private static final String NULL_EFFECT_VERTEX = "null/vertexshader.glsl";

@@ -2,9 +2,9 @@ package com.chan.rtmp.stream.packer.rtmp;
 
 import android.media.MediaCodec;
 
-import com.wenyu.rtmp.stream.packer.AnnexbHelper;
-import com.wenyu.rtmp.stream.packer.Packer;
-import com.wenyu.rtmp.stream.packer.flv.FlvPackerHelper;
+import com.chan.rtmp.stream.packer.AnnexbHelper;
+import com.chan.rtmp.stream.packer.Packer;
+import com.chan.rtmp.stream.packer.flv.FlvPackerHelper;
 
 import java.nio.ByteBuffer;
 

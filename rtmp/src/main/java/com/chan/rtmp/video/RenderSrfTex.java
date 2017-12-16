@@ -10,10 +10,10 @@ import android.opengl.GLES20;
 import android.opengl.GLUtils;
 import android.opengl.Matrix;
 
-import com.wenyu.rtmp.camera.CameraData;
-import com.wenyu.rtmp.camera.CameraHolder;
-import com.wenyu.rtmp.entity.Watermark;
-import com.wenyu.rtmp.entity.WatermarkPosition;
+import com.chan.rtmp.camera.CameraData;
+import com.chan.rtmp.camera.CameraHolder;
+import com.chan.rtmp.entity.Watermark;
+import com.chan.rtmp.entity.WatermarkPosition;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

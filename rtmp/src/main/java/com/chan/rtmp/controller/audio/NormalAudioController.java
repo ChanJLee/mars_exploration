@@ -3,13 +3,13 @@ package com.chan.rtmp.controller.audio;
 import android.annotation.TargetApi;
 import android.media.AudioRecord;
 
-import com.wenyu.rtmp.audio.OnAudioEncodeListener;
-import com.wenyu.rtmp.configuration.AudioConfiguration;
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.audio.AudioProcessor;
-import com.wenyu.rtmp.audio.AudioUtils;
-import com.wenyu.rtmp.controller.audio.IAudioController;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.audio.OnAudioEncodeListener;
+import com.chan.rtmp.configuration.AudioConfiguration;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.audio.AudioProcessor;
+import com.chan.rtmp.audio.AudioUtils;
+import com.chan.rtmp.controller.audio.IAudioController;
+import com.chan.rtmp.utils.SopCastLog;
 
 public class NormalAudioController implements IAudioController {
     private OnAudioEncodeListener mListener;

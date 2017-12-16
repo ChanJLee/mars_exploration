@@ -3,8 +3,8 @@ package com.chan.rtmp.audio;
 import android.annotation.TargetApi;
 import android.media.MediaCodec;
 
-import com.wenyu.rtmp.configuration.AudioConfiguration;
-import com.wenyu.rtmp.mediacodec.AudioMediaCodec;
+import com.chan.rtmp.configuration.AudioConfiguration;
+import com.chan.rtmp.mediacodec.AudioMediaCodec;
 
 import java.nio.ByteBuffer;
 

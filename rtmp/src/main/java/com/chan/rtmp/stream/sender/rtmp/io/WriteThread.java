@@ -1,9 +1,9 @@
 package com.chan.rtmp.stream.sender.rtmp.io;
 
-import com.wenyu.rtmp.entity.Frame;
-import com.wenyu.rtmp.stream.sender.rtmp.packets.Command;
-import com.wenyu.rtmp.stream.sender.rtmp.packets.Chunk;
-import com.wenyu.rtmp.stream.sender.sendqueue.ISendQueue;
+import com.chan.rtmp.entity.Frame;
+import com.chan.rtmp.stream.sender.rtmp.packets.Command;
+import com.chan.rtmp.stream.sender.rtmp.packets.Chunk;
+import com.chan.rtmp.stream.sender.sendqueue.ISendQueue;
 
 import java.io.IOException;
 import java.io.OutputStream;

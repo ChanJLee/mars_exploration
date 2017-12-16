@@ -4,7 +4,7 @@ import android.annotation.TargetApi;
 import android.opengl.EGL14;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.utils.SopCastLog;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

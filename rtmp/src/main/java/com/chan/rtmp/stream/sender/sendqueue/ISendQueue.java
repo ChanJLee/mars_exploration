@@ -1,6 +1,6 @@
 package com.chan.rtmp.stream.sender.sendqueue;
 
-import com.wenyu.rtmp.entity.Frame;
+import com.chan.rtmp.entity.Frame;
 
 public interface ISendQueue {
     void start();

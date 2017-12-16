@@ -2,8 +2,8 @@ package com.chan.rtmp.stream.packer;
 
 import android.media.MediaCodec;
 
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.utils.SopCastLog;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

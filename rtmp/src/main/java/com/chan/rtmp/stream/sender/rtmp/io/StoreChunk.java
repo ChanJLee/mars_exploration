@@ -1,6 +1,6 @@
 package com.chan.rtmp.stream.sender.rtmp.io;
 
-import com.wenyu.rtmp.stream.sender.rtmp.Util;
+import com.chan.rtmp.stream.sender.rtmp.Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

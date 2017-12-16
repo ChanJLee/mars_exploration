@@ -5,8 +5,8 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 
-import com.wenyu.rtmp.audio.AudioUtils;
-import com.wenyu.rtmp.configuration.AudioConfiguration;
+import com.chan.rtmp.audio.AudioUtils;
+import com.chan.rtmp.configuration.AudioConfiguration;
 
 import java.io.IOException;
 

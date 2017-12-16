@@ -1,12 +1,12 @@
 package com.chan.rtmp.stream.sender.rtmp.packets;
 
 
-import com.wenyu.rtmp.stream.amf.AmfBoolean;
-import com.wenyu.rtmp.stream.amf.AmfData;
-import com.wenyu.rtmp.stream.amf.AmfDecoder;
-import com.wenyu.rtmp.stream.amf.AmfNull;
-import com.wenyu.rtmp.stream.amf.AmfNumber;
-import com.wenyu.rtmp.stream.amf.AmfString;
+import com.chan.rtmp.stream.amf.AmfBoolean;
+import com.chan.rtmp.stream.amf.AmfData;
+import com.chan.rtmp.stream.amf.AmfDecoder;
+import com.chan.rtmp.stream.amf.AmfNull;
+import com.chan.rtmp.stream.amf.AmfNumber;
+import com.chan.rtmp.stream.amf.AmfString;
 
 import java.io.IOException;
 import java.io.InputStream;

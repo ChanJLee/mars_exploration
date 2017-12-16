@@ -2,7 +2,7 @@ package com.chan.rtmp.audio;
 
 import android.media.AudioRecord;
 
-import com.wenyu.rtmp.configuration.AudioConfiguration;
+import com.chan.rtmp.configuration.AudioConfiguration;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;

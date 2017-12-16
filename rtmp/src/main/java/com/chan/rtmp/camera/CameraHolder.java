@@ -5,10 +5,10 @@ import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 
-import com.wenyu.rtmp.camera.exception.CameraHardwareException;
-import com.wenyu.rtmp.camera.exception.CameraNotSupportException;
-import com.wenyu.rtmp.configuration.CameraConfiguration;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.camera.exception.CameraHardwareException;
+import com.chan.rtmp.camera.exception.CameraNotSupportException;
+import com.chan.rtmp.configuration.CameraConfiguration;
+import com.chan.rtmp.utils.SopCastLog;
 
 import java.io.IOException;
 import java.util.ArrayList;

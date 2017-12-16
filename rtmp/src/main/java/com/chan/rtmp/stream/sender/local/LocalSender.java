@@ -2,7 +2,7 @@ package com.chan.rtmp.stream.sender.local;
 
 import android.os.Environment;
 
-import com.wenyu.rtmp.stream.sender.Sender;
+import com.chan.rtmp.stream.sender.Sender;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

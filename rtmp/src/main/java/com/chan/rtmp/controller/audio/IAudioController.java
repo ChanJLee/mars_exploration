@@ -1,7 +1,7 @@
 package com.chan.rtmp.controller.audio;
 
-import com.wenyu.rtmp.audio.OnAudioEncodeListener;
-import com.wenyu.rtmp.configuration.AudioConfiguration;
+import com.chan.rtmp.audio.OnAudioEncodeListener;
+import com.chan.rtmp.configuration.AudioConfiguration;
 
 public interface IAudioController {
     void start();

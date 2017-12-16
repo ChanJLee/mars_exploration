@@ -1,8 +1,8 @@
 package com.chan.rtmp.stream.sender.sendqueue;
 
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.entity.Frame;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.entity.Frame;
+import com.chan.rtmp.utils.SopCastLog;
 
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;

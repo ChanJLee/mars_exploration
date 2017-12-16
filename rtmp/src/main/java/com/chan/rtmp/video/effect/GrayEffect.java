@@ -2,7 +2,7 @@ package com.chan.rtmp.video.effect;
 
 import android.content.Context;
 
-import com.wenyu.rtmp.video.GLSLFileUtils;
+import com.chan.rtmp.video.GLSLFileUtils;
 
 public class GrayEffect extends Effect{
 

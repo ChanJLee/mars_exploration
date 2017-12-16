@@ -6,9 +6,9 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import com.wenyu.rtmp.R;
-import com.wenyu.rtmp.camera.CameraData;
-import com.wenyu.rtmp.camera.CameraHolder;
+import com.chan.rtmp.R;
+import com.chan.rtmp.camera.CameraData;
+import com.chan.rtmp.camera.CameraHolder;
 
 @TargetApi(18)
 public class FocusPieView extends ImageView {

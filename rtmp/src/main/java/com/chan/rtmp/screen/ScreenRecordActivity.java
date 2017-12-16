@@ -7,16 +7,16 @@ import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 
-import com.wenyu.rtmp.configuration.AudioConfiguration;
-import com.wenyu.rtmp.configuration.VideoConfiguration;
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.controller.audio.NormalAudioController;
-import com.wenyu.rtmp.controller.video.ScreenVideoController;
-import com.wenyu.rtmp.controller.StreamController;
-import com.wenyu.rtmp.stream.packer.Packer;
-import com.wenyu.rtmp.stream.sender.Sender;
-import com.wenyu.rtmp.utils.SopCastUtils;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.configuration.AudioConfiguration;
+import com.chan.rtmp.configuration.VideoConfiguration;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.controller.audio.NormalAudioController;
+import com.chan.rtmp.controller.video.ScreenVideoController;
+import com.chan.rtmp.controller.StreamController;
+import com.chan.rtmp.stream.packer.Packer;
+import com.chan.rtmp.stream.sender.Sender;
+import com.chan.rtmp.utils.SopCastUtils;
+import com.chan.rtmp.utils.SopCastLog;
 
 public class ScreenRecordActivity extends Activity {
     private static final String TAG = SopCastConstant.TAG;

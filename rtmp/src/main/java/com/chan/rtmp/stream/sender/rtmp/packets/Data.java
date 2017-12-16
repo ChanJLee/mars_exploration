@@ -1,7 +1,7 @@
 package com.chan.rtmp.stream.sender.rtmp.packets;
 
-import com.wenyu.rtmp.stream.amf.AmfString;
-import com.wenyu.rtmp.stream.sender.rtmp.io.SessionInfo;
+import com.chan.rtmp.stream.amf.AmfString;
+import com.chan.rtmp.stream.sender.rtmp.io.SessionInfo;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,8 +6,8 @@ package com.chan.rtmp.stream.sender.rtmp.packets;
 
 import android.util.Log;
 
-import com.wenyu.rtmp.stream.sender.rtmp.Util;
-import com.wenyu.rtmp.stream.sender.rtmp.io.SessionInfo;
+import com.chan.rtmp.stream.sender.rtmp.Util;
+import com.chan.rtmp.stream.sender.rtmp.io.SessionInfo;
 
 import java.io.EOFException;
 import java.io.IOException;

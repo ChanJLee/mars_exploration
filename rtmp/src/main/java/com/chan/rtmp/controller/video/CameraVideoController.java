@@ -2,13 +2,12 @@ package com.chan.rtmp.controller.video;
 
 import android.os.Build;
 
-import com.wenyu.rtmp.configuration.VideoConfiguration;
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.controller.video.IVideoController;
-import com.wenyu.rtmp.utils.SopCastLog;
-import com.wenyu.rtmp.video.MyRecorder;
-import com.wenyu.rtmp.video.MyRenderer;
-import com.wenyu.rtmp.video.OnVideoEncodeListener;
+import com.chan.rtmp.configuration.VideoConfiguration;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.utils.SopCastLog;
+import com.chan.rtmp.video.MyRecorder;
+import com.chan.rtmp.video.MyRenderer;
+import com.chan.rtmp.video.OnVideoEncodeListener;
 
 public class CameraVideoController implements IVideoController {
     private MyRecorder mRecorder;

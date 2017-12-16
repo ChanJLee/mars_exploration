@@ -9,13 +9,13 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.view.Surface;
 
-import com.wenyu.rtmp.configuration.VideoConfiguration;
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.controller.video.IVideoController;
-import com.wenyu.rtmp.mediacodec.VideoMediaCodec;
-import com.wenyu.rtmp.screen.ScreenRecordEncoder;
-import com.wenyu.rtmp.utils.SopCastLog;
-import com.wenyu.rtmp.video.OnVideoEncodeListener;
+import com.chan.rtmp.configuration.VideoConfiguration;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.controller.video.IVideoController;
+import com.chan.rtmp.mediacodec.VideoMediaCodec;
+import com.chan.rtmp.screen.ScreenRecordEncoder;
+import com.chan.rtmp.utils.SopCastLog;
+import com.chan.rtmp.video.OnVideoEncodeListener;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 

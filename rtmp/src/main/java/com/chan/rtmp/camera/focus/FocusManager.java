@@ -3,7 +3,7 @@ package com.chan.rtmp.camera.focus;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 
-import com.wenyu.rtmp.camera.CameraHolder;
+import com.chan.rtmp.camera.CameraHolder;
 
 public class FocusManager implements AutoFocusCallback {
     public final static String TAG = "FocusManager";

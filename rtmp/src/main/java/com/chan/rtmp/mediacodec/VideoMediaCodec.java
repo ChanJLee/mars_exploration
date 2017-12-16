@@ -5,10 +5,10 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 
-import com.wenyu.rtmp.configuration.VideoConfiguration;
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.blacklist.BlackListHelper;
-import com.wenyu.rtmp.utils.SopCastLog;
+import com.chan.rtmp.configuration.VideoConfiguration;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.blacklist.BlackListHelper;
+import com.chan.rtmp.utils.SopCastLog;
 
 @TargetApi(18)
 public class VideoMediaCodec {

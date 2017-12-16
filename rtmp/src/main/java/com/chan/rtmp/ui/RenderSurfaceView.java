@@ -7,11 +7,11 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 
-import com.wenyu.rtmp.constant.SopCastConstant;
-import com.wenyu.rtmp.camera.CameraHolder;
-import com.wenyu.rtmp.utils.SopCastLog;
-import com.wenyu.rtmp.video.MyRenderer;
-import com.wenyu.rtmp.video.effect.Effect;
+import com.chan.rtmp.camera.CameraHolder;
+import com.chan.rtmp.constant.SopCastConstant;
+import com.chan.rtmp.utils.SopCastLog;
+import com.chan.rtmp.video.MyRenderer;
+import com.chan.rtmp.video.effect.Effect;
 
 public class RenderSurfaceView extends GLSurfaceView {
     private MyRenderer mRenderer;
