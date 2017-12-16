@@ -1,4 +1,4 @@
-package com.chan.vision.compat;
+package com.chan.vision.camera;
 
 import android.graphics.ImageFormat;
 import android.hardware.Camera;

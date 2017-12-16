@@ -1,6 +1,6 @@
 package com.chan.vision;
 
-import com.chan.vision.compat.CameraCompat;
+import com.chan.vision.camera.CameraCompat;
 import com.chan.vision.encode.VideoEncoder;
 
 /**
