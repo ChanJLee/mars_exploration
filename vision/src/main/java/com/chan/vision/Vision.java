@@ -26,6 +26,7 @@ public class Vision {
 
 	public void start() {
 		try {
+			mVideoEncoder.start();
 			CameraCompat camera = CameraCompat.getInstance();
 			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
@@ -34,6 +35,7 @@ public class Vision {
 					mVideoEncoder.encode(data);
 				}
 			});
+			camera.startPreview();
 
 			if (mVisionCallback != null) {
 				mVisionCallback.onStart();
@@ -48,6 +50,7 @@ public class Vision {
 
 	public void release() {
 		CameraCompat.getInstance().release();
+		mVideoEncoder.release();
 		if (mVisionCallback != null) {
 			mVisionCallback.onRelease();
 		}

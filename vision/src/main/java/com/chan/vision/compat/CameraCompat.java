@@ -120,6 +120,9 @@ public class CameraCompat {
 		}
 	}
 
+	public void startPreview() {
+	}
+
 	public interface PreviewCallback {
 		void onPreviewFrame(byte[] data);
 	}
