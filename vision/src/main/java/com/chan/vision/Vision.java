@@ -27,7 +27,7 @@ public class Vision {
 	public void start() {
 		try {
 			CameraCompat camera = CameraCompat.getInstance();
-			camera.getInstance().open();
+			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
 				public void onPreviewFrame(byte[] data) {
