@@ -1,4 +1,4 @@
-package com.chan.mars.check;
+package com.chan.mars.misc;
 
 import android.content.Context;
 import android.content.Intent;

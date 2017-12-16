@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.chan.mars.R;
-import com.chan.mars.check.CheckActivity;
 
 public class DispatchActivity extends AppCompatActivity implements View.OnClickListener {
 

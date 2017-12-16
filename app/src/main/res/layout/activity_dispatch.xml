@@ -8,8 +8,14 @@
     tools:context="com.chan.mars.misc.DispatchActivity">
 
     <Button
+        android:id="@+id/check_hardware"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="校验硬件"
-        android:id="@+id/check_hardware"/>
+        android:text="校验硬件"/>
+
+    <Button
+        android:id="@+id/start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始"/>
 </LinearLayout>

@@ -24,7 +24,9 @@
         </activity>
         <activity android:name=".misc.DispatchActivity">
         </activity>
-        <activity android:name=".check.CheckActivity">
+        <activity android:name=".misc.CheckActivity">
+        </activity>
+        <activity android:name=".mars.MarsActivity">
         </activity>
     </application>
 
