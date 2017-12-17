@@ -26,7 +26,7 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 		mEtAddress = findViewById(R.id.address);
 		mBtnLive.setOnClickListener(this);
 
-		mVision = new Vision(this);
+		mVision = new Vision();
 		mVision.start();
 	}
 

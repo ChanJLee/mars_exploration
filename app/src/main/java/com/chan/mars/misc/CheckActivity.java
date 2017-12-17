@@ -9,6 +9,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -71,6 +72,12 @@ public class CheckActivity extends AppCompatActivity {
 		mCamera = Camera.open();
 		try {
 			mCamera.setPreviewDisplay(mSurfaceView.getHolder());
+			mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+				@Override
+				public void onPreviewFrame(byte[] data, Camera camera) {
+					Log.d("chan_debug", "frame");
+				}
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 			e("preview error");

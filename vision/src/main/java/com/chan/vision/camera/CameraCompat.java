@@ -1,6 +1,5 @@
 package com.chan.vision.camera;
 
-import android.app.Activity;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -21,11 +20,7 @@ public class CameraCompat {
 
 	private static CameraCompat sCameraCompat;
 	private Camera mCamera;
-	private Activity mActivity;
-
-	public CameraCompat(Activity activity) {
-		mActivity = activity;
-	}
+	private byte[] mCameraBuffer;
 
 	public void open() {
 		open(getDefaultCamera());
@@ -148,11 +143,11 @@ public class CameraCompat {
 		return 0;
 	}
 
-	public static CameraCompat getInstance(Activity activity) {
+	public static CameraCompat getInstance() {
 		if (sCameraCompat == null) {
 			synchronized (CameraCompat.class) {
 				if (sCameraCompat == null) {
-					sCameraCompat = new CameraCompat(activity);
+					sCameraCompat = new CameraCompat();
 				}
 			}
 		}
@@ -161,11 +156,11 @@ public class CameraCompat {
 
 	public void setPreviewCallback(final PreviewCallback callback) {
 		if (mCamera != null) {
-			mCamera.setPreviewCallback(callback == null ? null : new Camera.PreviewCallback() {
+			mCamera.setPreviewCallbackWithBuffer(callback == null ? null : new Camera.PreviewCallback() {
 				@Override
 				public void onPreviewFrame(byte[] data, Camera camera) {
-					d("frame");
-					//callback.onPreviewFrame(data);
+					camera.addCallbackBuffer(mCameraBuffer);
+					callback.onPreviewFrame(data);
 				}
 			});
 		}
@@ -175,12 +170,13 @@ public class CameraCompat {
 		Camera.Parameters parameters = mCamera.getParameters();
 		Camera.Size size = mCamera.getParameters().getPreviewSize();
 		int bufferSize = size.width * size.height * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat()) / 8;
-		mCamera.addCallbackBuffer(new byte[bufferSize]);
+		mCameraBuffer = new byte[bufferSize];
+		mCamera.addCallbackBuffer(mCameraBuffer);
 		int[] textures = new int[1];
 		GLES20.glGenTextures(1, textures, 0);
-		SurfaceTexture surfaceView = new SurfaceTexture(textures[0]);
+		SurfaceTexture surfaceTexture = new SurfaceTexture(textures[0]);
 		try {
-			mCamera.setPreviewTexture(surfaceView);
+			mCamera.setPreviewTexture(surfaceTexture);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

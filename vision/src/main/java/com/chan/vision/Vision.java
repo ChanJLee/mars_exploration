@@ -1,6 +1,5 @@
 package com.chan.vision;
 
-import android.app.Activity;
 import android.media.MediaCodec;
 import android.util.Log;
 
@@ -18,9 +17,8 @@ public class Vision {
 
 	private VideoEncoder mVideoEncoder;
 	private VisionCallback mVisionCallback;
-	private Activity mActivity;
 
-	public Vision(Activity activity) {
+	public Vision() {
 		mVideoEncoder = new VideoEncoder();
 		mVideoEncoder.setCallback(new VideoEncoder.Callback() {
 			@Override
@@ -30,13 +28,12 @@ public class Vision {
 				}
 			}
 		});
-		mActivity = activity;
 	}
 
 	public void start() {
 		try {
 			mVideoEncoder.start();
-			CameraCompat camera = CameraCompat.getInstance(mActivity);
+			CameraCompat camera = CameraCompat.getInstance();
 			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
@@ -59,7 +56,7 @@ public class Vision {
 	}
 
 	public void release() {
-		CameraCompat.getInstance(mActivity).release();
+		CameraCompat.getInstance().release();
 		mVideoEncoder.release();
 		if (mVisionCallback != null) {
 			mVisionCallback.onRelease();
