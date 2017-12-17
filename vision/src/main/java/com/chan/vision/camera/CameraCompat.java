@@ -4,7 +4,6 @@ import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.GLES20;
-import android.util.Log;
 
 import com.chan.vision.exception.VisionError;
 
@@ -16,7 +15,6 @@ import java.util.List;
  */
 
 public class CameraCompat {
-	private static final String TAG = "CameraCompat";
 
 	private static CameraCompat sCameraCompat;
 	private Camera mCamera;
@@ -181,10 +179,6 @@ public class CameraCompat {
 			e.printStackTrace();
 		}
 		mCamera.startPreview();
-	}
-
-	private static void d(String msg) {
-		Log.d(TAG, msg);
 	}
 
 	public interface PreviewCallback {
