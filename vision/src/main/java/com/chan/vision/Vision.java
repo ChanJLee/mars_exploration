@@ -1,37 +1,47 @@
 package com.chan.vision;
 
+import android.app.Activity;
+import android.media.MediaCodec;
+import android.util.Log;
+
 import com.chan.vision.camera.CameraCompat;
 import com.chan.vision.encode.VideoEncoder;
+
+import java.nio.ByteBuffer;
 
 /**
  * Created by chan on 2017/12/17.
  */
 
 public class Vision {
+	private static final String TAG = "vision";
 
 	private VideoEncoder mVideoEncoder;
 	private VisionCallback mVisionCallback;
+	private Activity mActivity;
 
-	public Vision() {
+	public Vision(Activity activity) {
 		mVideoEncoder = new VideoEncoder();
 		mVideoEncoder.setCallback(new VideoEncoder.Callback() {
 			@Override
-			public void onEncoded(byte[] data, int offset, int len) {
+			public void onEncoded(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo) {
 				if (mVisionCallback != null) {
-					mVisionCallback.onPreview(data, offset, len);
+					mVisionCallback.onPreview(byteBuffer, bufferInfo);
 				}
 			}
 		});
+		mActivity = activity;
 	}
 
 	public void start() {
 		try {
 			mVideoEncoder.start();
-			CameraCompat camera = CameraCompat.getInstance();
+			CameraCompat camera = CameraCompat.getInstance(mActivity);
 			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
 				public void onPreviewFrame(byte[] data) {
+					d("onPreviewFrame, len: " + data.length);
 					mVideoEncoder.encode(data);
 				}
 			});
@@ -49,7 +59,7 @@ public class Vision {
 	}
 
 	public void release() {
-		CameraCompat.getInstance().release();
+		CameraCompat.getInstance(mActivity).release();
 		mVideoEncoder.release();
 		if (mVisionCallback != null) {
 			mVisionCallback.onRelease();
@@ -60,12 +70,16 @@ public class Vision {
 		mVisionCallback = visionCallback;
 	}
 
+	private static void d(String msg) {
+		Log.d(TAG, msg);
+	}
+
 	public interface VisionCallback {
 		void onError(Throwable error);
 
 		void onStart();
 
-		void onPreview(byte[] data, int offset, int len);
+		void onPreview(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo);
 
 		void onRelease();
 	}

@@ -18,6 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:visibility="invisible"
             android:text="rtmp://192.168.0.105:1396/chan_live/rtmpstream"/>
 
         <Button
@@ -27,9 +28,8 @@
             android:text="live"/>
     </LinearLayout>
 
-    <com.chan.rtmp.ui.CameraLivingView
-        android:id="@+id/live_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:id="@+id/camera"/>
 </LinearLayout>
