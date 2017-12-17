@@ -20,7 +20,7 @@ public class VideoEncoder {
 	public VideoEncoder() {
 		MediaFormat format = MediaFormat.createVideoFormat("video/avc", 360, 640);
 		format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 38016);
-		format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
+		format.setInteger(MediaFormat.KEY_COLOR_FORMAT,  MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
 		format.setInteger(MediaFormat.KEY_BIT_RATE, 32 * 360 * 640 * 15 / 100);
 		format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
 		format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);
@@ -47,7 +47,7 @@ public class VideoEncoder {
 
 	public void encode(byte[] data) {
 		ByteBuffer[] inputBuffers = mMediaCodec.getInputBuffers();
-		int inputBufferIndex = mMediaCodec.dequeueInputBuffer(10000);
+		int inputBufferIndex = mMediaCodec.dequeueInputBuffer(-1);
 		if (inputBufferIndex >= 0) {
 			ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
 			inputBuffer.clear();
@@ -56,7 +56,7 @@ public class VideoEncoder {
 		}
 
 		ByteBuffer[] outBuffers = mMediaCodec.getOutputBuffers();
-		int outBufferIndex = mMediaCodec.dequeueOutputBuffer(mBufferInfo, 12000);
+		int outBufferIndex = mMediaCodec.dequeueOutputBuffer(mBufferInfo, -1);
 		if (outBufferIndex >= 0) {
 			ByteBuffer byteBuffer = outBuffers[outBufferIndex];
 			if (mCallback != null) {

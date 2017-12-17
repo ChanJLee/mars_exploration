@@ -165,7 +165,7 @@ public class CameraCompat {
 				@Override
 				public void onPreviewFrame(byte[] data, Camera camera) {
 					d("frame");
-					callback.onPreviewFrame(data);
+					//callback.onPreviewFrame(data);
 				}
 			});
 		}
