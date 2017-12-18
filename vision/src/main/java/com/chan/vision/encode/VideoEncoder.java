@@ -16,12 +16,14 @@ public class VideoEncoder {
 	private MediaCodec mMediaCodec;
 	private MediaCodec.BufferInfo mBufferInfo;
 	private long mTimestamp;
+	private boolean mLocked = false;
 
-	public VideoEncoder() {
-		MediaFormat format = MediaFormat.createVideoFormat("video/avc", 360, 640);
+	public VideoEncoder(int width, int height) {
+		MediaFormat format = MediaFormat.createVideoFormat("video/avc", width, height);
 		format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 38016);
-		format.setInteger(MediaFormat.KEY_COLOR_FORMAT,  MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
-		format.setInteger(MediaFormat.KEY_BIT_RATE, 32 * 360 * 640 * 15 / 100);
+		format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
+		//FIXME FPS is always equals 15
+		format.setInteger(MediaFormat.KEY_BIT_RATE, 32 * width * height * 15 / 100);
 		format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
 		format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);
 		format.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_VBR);
@@ -46,6 +48,10 @@ public class VideoEncoder {
 	}
 
 	public void encode(byte[] data) {
+		if (mLocked) {
+			return;
+		}
+		mLocked = true;
 		ByteBuffer[] inputBuffers = mMediaCodec.getInputBuffers();
 		int inputBufferIndex = mMediaCodec.dequeueInputBuffer(-1);
 		if (inputBufferIndex >= 0) {
@@ -64,6 +70,7 @@ public class VideoEncoder {
 			}
 			mMediaCodec.releaseOutputBuffer(outBufferIndex, false);
 		}
+		mLocked = false;
 	}
 
 	public void release() {

@@ -1,9 +1,9 @@
 package com.chan.vision.camera;
 
 import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
-import android.opengl.GLES20;
+import android.util.Log;
+import android.view.SurfaceHolder;
 
 import com.chan.vision.exception.VisionError;
 
@@ -16,6 +16,7 @@ import java.util.List;
 
 public class CameraCompat {
 
+	private static final int DEFAULT_FPS = 15;
 	private static CameraCompat sCameraCompat;
 	private Camera mCamera;
 	private byte[] mCameraBuffer;
@@ -34,13 +35,12 @@ public class CameraCompat {
 		}
 
 		mCamera = Camera.open(id);
-		Camera.Parameters parameters = mCamera.getParameters();
-		setPreviewFormat(parameters);
-		setPreviewFps(15, parameters);
-		setPreviewSize(360, 640, parameters);
+		setPreviewFormat(ImageFormat.NV21);
+		setPreviewFps(DEFAULT_FPS);
 	}
 
-	private void setPreviewFps(int fps, Camera.Parameters parameters) {
+	private void setPreviewFps(int fps) {
+		Camera.Parameters parameters = mCamera.getParameters();
 		try {
 			parameters.setPreviewFrameRate(fps);
 			mCamera.setParameters(parameters);
@@ -58,12 +58,13 @@ public class CameraCompat {
 		}
 	}
 
-	public void setPreviewSize(int width, int height, Camera.Parameters parameters) {
+	private void setPreviewSize(int width, int height) {
 		Camera.Size size = getOptimalPreviewSize(width, height);
 		if (size == null) {
 			return;
 		}
 		try {
+			Camera.Parameters parameters = mCamera.getParameters();
 			parameters.setPreviewSize(size.width, size.height);
 			mCamera.setParameters(parameters);
 		} catch (Exception e) {
@@ -71,7 +72,7 @@ public class CameraCompat {
 		}
 	}
 
-	public Camera.Size getOptimalPreviewSize(int width, int height) {
+	private Camera.Size getOptimalPreviewSize(int width, int height) {
 		Camera.Size optimalSize = null;
 		double minHeightDiff = Double.MAX_VALUE;
 		double minWidthDiff = Double.MAX_VALUE;
@@ -112,9 +113,10 @@ public class CameraCompat {
 		return closestRange;
 	}
 
-	private void setPreviewFormat(Camera.Parameters parameters) {
+	private void setPreviewFormat(int format) {
 		try {
-			parameters.setPreviewFormat(ImageFormat.NV21);
+			Camera.Parameters parameters = mCamera.getParameters();
+			parameters.setPreviewFormat(format);
 			mCamera.setParameters(parameters);
 		} catch (Exception e) {
 			throw new VisionError("platform do not support nv21");
@@ -158,27 +160,42 @@ public class CameraCompat {
 				@Override
 				public void onPreviewFrame(byte[] data, Camera camera) {
 					camera.addCallbackBuffer(mCameraBuffer);
-					callback.onPreviewFrame(data);
+					Log.d("Mars", "buffer");
+					//callback.onPreviewFrame(data);
 				}
 			});
 		}
 	}
 
-	public void startPreview() {
+	public void startPreview(SurfaceHolder surfaceHolder, int width, int height) {
 		Camera.Parameters parameters = mCamera.getParameters();
 		Camera.Size size = mCamera.getParameters().getPreviewSize();
 		int bufferSize = size.width * size.height * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat()) / 8;
 		mCameraBuffer = new byte[bufferSize];
 		mCamera.addCallbackBuffer(mCameraBuffer);
-		int[] textures = new int[1];
-		GLES20.glGenTextures(1, textures, 0);
-		SurfaceTexture surfaceTexture = new SurfaceTexture(textures[0]);
-		try {
-			mCamera.setPreviewTexture(surfaceTexture);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		mCamera.startPreview();
+		setPreviewSize(width, height);
+		surfaceHolder.addCallback(new SurfaceHolder.Callback() {
+			@Override
+			public void surfaceCreated(SurfaceHolder holder) {
+				try {
+					mCamera.setPreviewDisplay(holder);
+					mCamera.startPreview();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+			}
+
+			@Override
+			public void surfaceDestroyed(SurfaceHolder holder) {
+				mCamera.stopPreview();
+				mCamera.release();
+			}
+		});
 	}
 
 	public interface PreviewCallback {

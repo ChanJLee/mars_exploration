@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.ImageFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -72,9 +73,15 @@ public class CheckActivity extends AppCompatActivity {
 		mCamera = Camera.open();
 		try {
 			mCamera.setPreviewDisplay(mSurfaceView.getHolder());
-			mCamera.setPreviewCallback(new Camera.PreviewCallback() {
+			Camera.Parameters parameters = mCamera.getParameters();
+			Camera.Size size = mCamera.getParameters().getPreviewSize();
+			int bufferSize = size.width * size.height * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat());
+			final byte[] mCameraBuffer = new byte[bufferSize];
+			mCamera.addCallbackBuffer(mCameraBuffer);
+			mCamera.setPreviewCallbackWithBuffer(new Camera.PreviewCallback() {
 				@Override
 				public void onPreviewFrame(byte[] data, Camera camera) {
+					mCamera.addCallbackBuffer(mCameraBuffer);
 					Log.d("chan_debug", "frame");
 				}
 			});

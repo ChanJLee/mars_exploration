@@ -2,6 +2,7 @@ package com.chan.vision;
 
 import android.media.MediaCodec;
 import android.util.Log;
+import android.view.SurfaceHolder;
 
 import com.chan.vision.camera.CameraCompat;
 import com.chan.vision.encode.VideoEncoder;
@@ -17,9 +18,15 @@ public class Vision {
 
 	private VideoEncoder mVideoEncoder;
 	private VisionCallback mVisionCallback;
+	private SurfaceHolder mSurfaceHolder;
+	private int mWidth;
+	private int mHeight;
 
-	public Vision() {
-		mVideoEncoder = new VideoEncoder();
+	public Vision(SurfaceHolder surfaceHolder, int width, int height) {
+		mWidth = width;
+		mHeight = height;
+		mSurfaceHolder = surfaceHolder;
+		mVideoEncoder = new VideoEncoder(width, height);
 		mVideoEncoder.setCallback(new VideoEncoder.Callback() {
 			@Override
 			public void onEncoded(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo) {
@@ -42,7 +49,7 @@ public class Vision {
 					mVideoEncoder.encode(data);
 				}
 			});
-			camera.startPreview();
+			camera.startPreview(mSurfaceHolder, mWidth, mHeight);
 
 			if (mVisionCallback != null) {
 				mVisionCallback.onStart();

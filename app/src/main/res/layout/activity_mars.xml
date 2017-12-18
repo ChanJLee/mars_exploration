@@ -18,8 +18,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:visibility="invisible"
-            android:text="rtmp://192.168.0.105:1396/chan_live/rtmpstream"/>
+            android:text="rtmp://192.168.0.105:1396/chan_live/rtmpstream"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/start_live"
@@ -28,8 +28,8 @@
             android:text="live"/>
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/camera"/>
+    <SurfaceView
+        android:id="@+id/camera"
+        android:layout_width="128dp"
+        android:layout_height="64dp"/>
 </LinearLayout>
