@@ -2,7 +2,6 @@ package com.chan.vision.camera;
 
 import android.graphics.ImageFormat;
 import android.hardware.Camera;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.chan.vision.exception.VisionError;
@@ -160,8 +159,7 @@ public class CameraCompat {
 				@Override
 				public void onPreviewFrame(byte[] data, Camera camera) {
 					camera.addCallbackBuffer(mCameraBuffer);
-					Log.d("Mars", "buffer");
-					//callback.onPreviewFrame(data);
+					callback.onPreviewFrame(data);
 				}
 			});
 		}
@@ -170,7 +168,8 @@ public class CameraCompat {
 	public void startPreview(SurfaceHolder surfaceHolder, int width, int height) {
 		Camera.Parameters parameters = mCamera.getParameters();
 		Camera.Size size = mCamera.getParameters().getPreviewSize();
-		int bufferSize = size.width * size.height * ImageFormat.getBitsPerPixel(parameters.getPreviewFormat()) / 8;
+		int pixelSize = ImageFormat.getBitsPerPixel(parameters.getPreviewFormat());
+		int bufferSize = size.width * size.height * pixelSize / 8;
 		mCameraBuffer = new byte[bufferSize];
 		mCamera.addCallbackBuffer(mCameraBuffer);
 		setPreviewSize(width, height);

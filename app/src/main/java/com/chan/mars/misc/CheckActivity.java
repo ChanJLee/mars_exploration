@@ -31,9 +31,10 @@ public class CheckActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_check);
 
+		ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
 		mStringBuilder = new StringBuilder();
-		mTvConsole = (TextView) findViewById(R.id.console);
-		mSurfaceView = (SurfaceView) findViewById(R.id.camera_preview_surface);
+		mTvConsole = findViewById(R.id.console);
+		mSurfaceView = findViewById(R.id.camera_preview_surface);
 		mSurfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
 			@Override
 			public void surfaceCreated(SurfaceHolder holder) {

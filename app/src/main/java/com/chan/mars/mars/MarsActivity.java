@@ -37,6 +37,37 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 
 		final RtmpPacker rtmpPacker = new RtmpPacker();
 		final RtmpSender rtmpSender = new RtmpSender();
+		rtmpSender.setSenderListener(new RtmpSender.OnSenderListener() {
+			@Override
+			public void onConnecting() {
+				d("connecting");
+			}
+
+			@Override
+			public void onConnected() {
+				d("connected");
+			}
+
+			@Override
+			public void onDisConnected() {
+				d("disconnected");
+			}
+
+			@Override
+			public void onPublishFail() {
+				d("publish fail");
+			}
+
+			@Override
+			public void onNetGood() {
+				d("net good");
+			}
+
+			@Override
+			public void onNetBad() {
+				d("net bad");
+			}
+		});
 		rtmpPacker.setPacketListener(new Packer.OnPacketListener() {
 			@Override
 			public void onPacket(byte[] data, int packetType) {
@@ -61,6 +92,7 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 						rtmpSender.setAddress("rtmp://192.168.0.101:1396/chan_live/rtmpstream");
 						rtmpSender.connect();
 						rtmpSender.start();
+						rtmpPacker.start();
 					}
 				}).start();
 			}

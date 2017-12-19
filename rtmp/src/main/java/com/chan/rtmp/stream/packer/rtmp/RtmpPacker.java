@@ -8,8 +8,6 @@ import com.chan.rtmp.stream.packer.flv.FlvPackerHelper;
 
 import java.nio.ByteBuffer;
 
-import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.AUDIO_HEADER_SIZE;
-import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.AUDIO_SPECIFIC_CONFIG_SIZE;
 import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.VIDEO_HEADER_SIZE;
 import static com.chan.rtmp.stream.packer.flv.FlvPackerHelper.VIDEO_SPECIFIC_CONFIG_EXTEND_SIZE;
 
@@ -52,18 +50,18 @@ public class RtmpPacker implements Packer, AnnexbHelper.AnnexbNaluListener {
 
     @Override
     public void onAudioData(ByteBuffer bb, MediaCodec.BufferInfo bi) {
-        if (packetListener == null || !isHeaderWrite || !isKeyFrameWrite) {
-            return;
-        }
-        bb.position(bi.offset);
-        bb.limit(bi.offset + bi.size);
-
-        byte[] audio = new byte[bi.size];
-        bb.get(audio);
-        int size = AUDIO_HEADER_SIZE + audio.length;
-        ByteBuffer buffer = ByteBuffer.allocate(size);
-        FlvPackerHelper.writeAudioTag(buffer, audio, false, mAudioSampleSize);
-        packetListener.onPacket(buffer.array(), AUDIO);
+//        if (packetListener == null || !isHeaderWrite || !isKeyFrameWrite) {
+//            return;
+//        }
+//        bb.position(bi.offset);
+//        bb.limit(bi.offset + bi.size);
+//
+//        byte[] audio = new byte[bi.size];
+//        bb.get(audio);
+//        int size = AUDIO_HEADER_SIZE + audio.length;
+//        ByteBuffer buffer = ByteBuffer.allocate(size);
+//        FlvPackerHelper.writeAudioTag(buffer, audio, false, mAudioSampleSize);
+//        packetListener.onPacket(buffer.array(), AUDIO);
     }
 
     @Override
@@ -101,7 +99,7 @@ public class RtmpPacker implements Packer, AnnexbHelper.AnnexbNaluListener {
         //写入第一个视频信息
         writeFirstVideoTag(sps, pps);
         //写入第一个音频信息
-        writeFirstAudioTag();
+        //writeFirstAudioTag();
         isHeaderWrite = true;
     }
 
@@ -113,10 +111,10 @@ public class RtmpPacker implements Packer, AnnexbHelper.AnnexbNaluListener {
     }
 
     private void writeFirstAudioTag() {
-        int size = AUDIO_SPECIFIC_CONFIG_SIZE + AUDIO_HEADER_SIZE;
-        ByteBuffer buffer = ByteBuffer.allocate(size);
-        FlvPackerHelper.writeFirstAudioTag(buffer, mAudioSampleRate, mIsStereo, mAudioSampleSize);
-        packetListener.onPacket(buffer.array(), FIRST_AUDIO);
+//        int size = AUDIO_SPECIFIC_CONFIG_SIZE + AUDIO_HEADER_SIZE;
+//        ByteBuffer buffer = ByteBuffer.allocate(size);
+//        FlvPackerHelper.writeFirstAudioTag(buffer, mAudioSampleRate, mIsStereo, mAudioSampleSize);
+//        packetListener.onPacket(buffer.array(), FIRST_AUDIO);
     }
 
     public void initAudioParams(int sampleRate, int sampleSize, boolean isStereo) {

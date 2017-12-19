@@ -26,6 +26,7 @@ public class Vision {
 		mWidth = width;
 		mHeight = height;
 		mSurfaceHolder = surfaceHolder;
+		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		mVideoEncoder = new VideoEncoder(width, height);
 		mVideoEncoder.setCallback(new VideoEncoder.Callback() {
 			@Override

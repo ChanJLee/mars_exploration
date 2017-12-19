@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 public class FlvPackerHelper {
     public static final int FLV_HEAD_SIZE = 9;
     public static final int VIDEO_HEADER_SIZE = 5;
-    public static final int AUDIO_HEADER_SIZE = 2;
+    //public static final int AUDIO_HEADER_SIZE = 2;
     public static final int FLV_TAG_HEADER_SIZE = 11;
     public static final int PRE_SIZE = 4;
     public static final int AUDIO_SPECIFIC_CONFIG_SIZE = 2;
@@ -79,26 +79,23 @@ public class FlvPackerHelper {
      * @param width     视频宽度
      * @param height    视频高度
      * @param fps       视频帧率
-     * @param audioRate 音频采样率
-     * @param audioSize 音频大小
-     * @param isStereo  音频是否为立体声
      * @return byte数组
      */
-    public static byte[] writeFlvMetaData(int width, int height, int fps, int audioRate, int audioSize, boolean isStereo) {
+    public static byte[] writeFlvMetaData(int width, int height, int fps) {
         AmfString metaDataHeader = new AmfString("onMetaData", false);
         AmfMap amfMap = new AmfMap();
         amfMap.setProperty("width", width);
         amfMap.setProperty("height", height);
         amfMap.setProperty("framerate", fps);
         amfMap.setProperty("videocodecid", FlvVideoCodecID.AVC);
-        amfMap.setProperty("audiosamplerate", audioRate);
-        amfMap.setProperty("audiosamplesize", audioSize);
-        if (isStereo) {
-            amfMap.setProperty("stereo", true);
-        } else {
-            amfMap.setProperty("stereo", false);
-        }
-        amfMap.setProperty("audiocodecid", FlvAudio.AAC);
+//        amfMap.setProperty("audiosamplerate", audioRate);
+//        amfMap.setProperty("audiosamplesize", audioSize);
+//        if (isStereo) {
+//            amfMap.setProperty("stereo", true);
+//        } else {
+//            amfMap.setProperty("stereo", false);
+//        }
+//        amfMap.setProperty("audiocodecid", FlvAudio.AAC);
 
         int size = amfMap.getSize() + metaDataHeader.getSize();
         ByteBuffer amfBuffer = ByteBuffer.allocate(size);

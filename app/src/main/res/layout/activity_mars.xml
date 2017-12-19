@@ -30,6 +30,6 @@
 
     <SurfaceView
         android:id="@+id/camera"
-        android:layout_width="128dp"
-        android:layout_height="64dp"/>
+        android:layout_width="256dp"
+        android:layout_height="128dp"/>
 </LinearLayout>

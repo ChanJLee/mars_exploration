@@ -4,6 +4,7 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.nio.ByteBuffer;
 
@@ -16,18 +17,14 @@ public class VideoEncoder {
 	private MediaCodec mMediaCodec;
 	private MediaCodec.BufferInfo mBufferInfo;
 	private long mTimestamp;
-	private boolean mLocked = false;
 
 	public VideoEncoder(int width, int height) {
 		MediaFormat format = MediaFormat.createVideoFormat("video/avc", width, height);
-		format.setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, 38016);
 		format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
 		//FIXME FPS is always equals 15
-		format.setInteger(MediaFormat.KEY_BIT_RATE, 32 * width * height * 15 / 100);
-		format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
-		format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);
-		format.setInteger(MediaFormat.KEY_BITRATE_MODE, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_VBR);
-		format.setInteger(MediaFormat.KEY_COMPLEXITY, MediaCodecInfo.EncoderCapabilities.BITRATE_MODE_CBR);
+		format.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 6);
+		format.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
+		format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
 		try {
 			mMediaCodec = MediaCodec.createEncoderByType("video/avc");
 			mMediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
@@ -48,21 +45,17 @@ public class VideoEncoder {
 	}
 
 	public void encode(byte[] data) {
-		if (mLocked) {
-			return;
-		}
-		mLocked = true;
-		ByteBuffer[] inputBuffers = mMediaCodec.getInputBuffers();
 		int inputBufferIndex = mMediaCodec.dequeueInputBuffer(-1);
 		if (inputBufferIndex >= 0) {
-			ByteBuffer inputBuffer = inputBuffers[inputBufferIndex];
-			inputBuffer.clear();
+			ByteBuffer inputBuffer = mMediaCodec.getInputBuffer(inputBufferIndex);
+			inputBuffer.rewind();
+			Log.d("chan_debug", inputBuffer.limit() + " " + inputBuffer.position() + " " + data.length);
 			inputBuffer.put(data);
 			mMediaCodec.queueInputBuffer(inputBufferIndex, 0, data.length, SystemClock.elapsedRealtime() - mTimestamp, 0);
 		}
 
 		ByteBuffer[] outBuffers = mMediaCodec.getOutputBuffers();
-		int outBufferIndex = mMediaCodec.dequeueOutputBuffer(mBufferInfo, -1);
+		int outBufferIndex = mMediaCodec.dequeueOutputBuffer(mBufferInfo, 11000);
 		if (outBufferIndex >= 0) {
 			ByteBuffer byteBuffer = outBuffers[outBufferIndex];
 			if (mCallback != null) {
@@ -70,7 +63,6 @@ public class VideoEncoder {
 			}
 			mMediaCodec.releaseOutputBuffer(outBufferIndex, false);
 		}
-		mLocked = false;
 	}
 
 	public void release() {
