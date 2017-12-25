@@ -13,15 +13,16 @@ import java.nio.ByteBuffer;
  */
 
 public class VideoEncoder {
+	private int mWidth = -1;
+	private int mHeight = -1;
 	private Callback mCallback;
 	private MediaCodec mMediaCodec;
 	private MediaCodec.BufferInfo mBufferInfo;
 	private long mTimestamp;
 
-	public VideoEncoder(int width, int height) {
+	private void initMeidaCodec(int width, int height) {
 		MediaFormat format = MediaFormat.createVideoFormat("video/avc", width, height);
 		format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
-		//FIXME FPS is always equals 15
 		format.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 6);
 		format.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
 		format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 1);
@@ -45,6 +46,10 @@ public class VideoEncoder {
 	}
 
 	public void encode(byte[] data) {
+		if (mHeight < 0 || mWidth < 0 || mMediaCodec == null) {
+			return;
+		}
+
 		int inputBufferIndex = mMediaCodec.dequeueInputBuffer(-1);
 		if (inputBufferIndex >= 0) {
 			ByteBuffer inputBuffer = mMediaCodec.getInputBuffer(inputBufferIndex);
@@ -77,6 +82,23 @@ public class VideoEncoder {
 	public void start() {
 		mTimestamp = SystemClock.elapsedRealtime();
 		mMediaCodec.start();
+	}
+
+	public void setWindowSize(int width, int height) {
+		mWidth = width;
+		mHeight = height;
+		if (mWidth < 0 || mHeight < 0) {
+			return;
+		}
+
+		MediaCodec mediaCodec = mMediaCodec;
+		mMediaCodec = null;
+		if (mediaCodec != null) {
+			mediaCodec.signalEndOfInputStream();
+			mediaCodec.stop();
+			mediaCodec.release();
+		}
+		initMeidaCodec(width, height);
 	}
 
 	public interface Callback {

@@ -7,10 +7,6 @@ import android.view.SurfaceHolder;
 import com.chan.vision.camera.CameraCompat;
 import com.chan.vision.encode.VideoEncoder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -31,7 +27,7 @@ public class Vision {
 		mHeight = height;
 		mSurfaceHolder = surfaceHolder;
 		surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-		mVideoEncoder = new VideoEncoder(width, height);
+		mVideoEncoder = new VideoEncoder();
 		mVideoEncoder.setCallback(new VideoEncoder.Callback() {
 			@Override
 			public void onEncoded(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo) {
@@ -51,25 +47,13 @@ public class Vision {
 			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
-				public void onPreviewFrame(byte[] data) {
-					if (writed) {
-						return;
-					}
-					writed = true;
-					d("onPreviewFrame, len: " + data.length);
-					File file = new File("/sdcard/x.png");
-					try {
-						FileOutputStream os = new FileOutputStream(file);
-						os.write(data);
-						os.flush();
-						os.close();
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+				public void onWindowSizeChange(int width, int height) {
+					mVideoEncoder.setWindowSize(width, height);
+				}
 
-					//mVideoEncoder.encode(data);
+				@Override
+				public void onPreviewFrame(byte[] data) {
+					mVideoEncoder.encode(data);
 				}
 			});
 			camera.startPreview(mSurfaceHolder, mWidth, mHeight);

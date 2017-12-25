@@ -19,6 +19,7 @@ public class CameraCompat {
 	private static CameraCompat sCameraCompat;
 	private Camera mCamera;
 	private byte[] mCameraBuffer;
+	private PreviewCallback mPreviewCallback;
 
 	public void open() {
 		open(getDefaultCamera());
@@ -153,13 +154,14 @@ public class CameraCompat {
 		return sCameraCompat;
 	}
 
-	public void setPreviewCallback(final PreviewCallback callback) {
+	public void setPreviewCallback(PreviewCallback callback) {
+		mPreviewCallback = callback;
 		if (mCamera != null) {
 			mCamera.setPreviewCallbackWithBuffer(callback == null ? null : new Camera.PreviewCallback() {
 				@Override
 				public void onPreviewFrame(byte[] data, Camera camera) {
+					mPreviewCallback.onPreviewFrame(data);
 					camera.addCallbackBuffer(mCameraBuffer);
-					callback.onPreviewFrame(data);
 				}
 			});
 		}
@@ -169,6 +171,9 @@ public class CameraCompat {
 		setPreviewSize(width, height);
 		Camera.Parameters parameters = mCamera.getParameters();
 		Camera.Size size = mCamera.getParameters().getPreviewSize();
+		if (mPreviewCallback != null) {
+			mPreviewCallback.onWindowSizeChange(size.width, size.height);
+		}
 		int pixelSize = ImageFormat.getBitsPerPixel(parameters.getPreviewFormat());
 		int bufferSize = size.width * size.height * pixelSize / 8;
 		mCameraBuffer = new byte[bufferSize];
@@ -198,6 +203,8 @@ public class CameraCompat {
 	}
 
 	public interface PreviewCallback {
+		void onWindowSizeChange(int width, int height);
+
 		void onPreviewFrame(byte[] data);
 	}
 }
