@@ -38,17 +38,15 @@ public class Vision {
 		});
 	}
 
-	boolean writed = false;
-
 	public void start() {
 		try {
-			mVideoEncoder.start();
 			CameraCompat camera = CameraCompat.getInstance();
 			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
 				public void onWindowSizeChange(int width, int height) {
 					mVideoEncoder.setWindowSize(width, height);
+					mVideoEncoder.start();
 				}
 
 				@Override

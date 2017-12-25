@@ -20,7 +20,7 @@ public class VideoEncoder {
 	private MediaCodec.BufferInfo mBufferInfo;
 	private long mTimestamp;
 
-	private void initMeidaCodec(int width, int height) {
+	private void initMediaCodec(int width, int height) {
 		MediaFormat format = MediaFormat.createVideoFormat("video/avc", width, height);
 		format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar);
 		format.setInteger(MediaFormat.KEY_BIT_RATE, width * height * 6);
@@ -98,7 +98,7 @@ public class VideoEncoder {
 			mediaCodec.stop();
 			mediaCodec.release();
 		}
-		initMeidaCodec(width, height);
+		initMediaCodec(width, height);
 	}
 
 	public interface Callback {
