@@ -166,13 +166,13 @@ public class CameraCompat {
 	}
 
 	public void startPreview(SurfaceHolder surfaceHolder, int width, int height) {
+		setPreviewSize(width, height);
 		Camera.Parameters parameters = mCamera.getParameters();
 		Camera.Size size = mCamera.getParameters().getPreviewSize();
 		int pixelSize = ImageFormat.getBitsPerPixel(parameters.getPreviewFormat());
 		int bufferSize = size.width * size.height * pixelSize / 8;
 		mCameraBuffer = new byte[bufferSize];
 		mCamera.addCallbackBuffer(mCameraBuffer);
-		setPreviewSize(width, height);
 		surfaceHolder.addCallback(new SurfaceHolder.Callback() {
 			@Override
 			public void surfaceCreated(SurfaceHolder holder) {

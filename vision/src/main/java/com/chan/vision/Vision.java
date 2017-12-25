@@ -7,6 +7,10 @@ import android.view.SurfaceHolder;
 import com.chan.vision.camera.CameraCompat;
 import com.chan.vision.encode.VideoEncoder;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 /**
@@ -38,6 +42,8 @@ public class Vision {
 		});
 	}
 
+	boolean writed = false;
+
 	public void start() {
 		try {
 			mVideoEncoder.start();
@@ -46,8 +52,24 @@ public class Vision {
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
 				public void onPreviewFrame(byte[] data) {
+					if (writed) {
+						return;
+					}
+					writed = true;
 					d("onPreviewFrame, len: " + data.length);
-					mVideoEncoder.encode(data);
+					File file = new File("/sdcard/x.png");
+					try {
+						FileOutputStream os = new FileOutputStream(file);
+						os.write(data);
+						os.flush();
+						os.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					//mVideoEncoder.encode(data);
 				}
 			});
 			camera.startPreview(mSurfaceHolder, mWidth, mHeight);
