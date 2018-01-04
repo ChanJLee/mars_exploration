@@ -48,10 +48,13 @@ public class PackageSender {
 
 	private String mHost;
 	private int mPort;
+
 	private Socket mSocket;
 	private Thread mInitThread;
+
 	private Thread mReadThread;
 	private HandlerThread mWriteThread;
+
 	private Handler mWriteHandler;
 	private Handler mReadHandler;
 
