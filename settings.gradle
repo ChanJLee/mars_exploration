@@ -1,1 +1,1 @@
-include ':app', ':rtmp', ':vision'
+include ':app', ':vision', ':protocol'

@@ -39,6 +39,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compileOnly 'com.google.android.things:androidthings:+'
 
-    compile project(":rtmp")
     compile project(":vision")
 }
