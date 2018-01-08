@@ -171,6 +171,14 @@ public class PackageSender {
 
 	}
 
+	public void sendImage(byte[] data, int offset, int len) {
+
+	}
+
+	public void sendWindowSize(int width, int height) {
+
+	}
+
 	public void write(@Type int type, byte[] data) {
 		if (type < 0 || type >= 100 || data == null) {
 			return;
