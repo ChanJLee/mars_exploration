@@ -40,4 +40,5 @@ dependencies {
     compileOnly 'com.google.android.things:androidthings:+'
 
     compile project(":vision")
+    compile project(":protocol")
 }

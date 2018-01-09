@@ -172,10 +172,10 @@ public class CameraCompat {
 		Camera.Parameters parameters = mCamera.getParameters();
 		Camera.Size size = mCamera.getParameters().getPreviewSize();
 		if (mPreviewCallback != null) {
-			mPreviewCallback.onWindowSizeChange(size.width, size.height);
+			mPreviewCallback.onConfigChange(size.width, size.height, parameters.getPictureFormat());
 		}
 		int pixelSize = ImageFormat.getBitsPerPixel(parameters.getPreviewFormat());
-		int bufferSize = size.width * size.height * pixelSize / 8;
+		int bufferSize = (int) (size.width * size.height * pixelSize / 8.0f);
 		mCameraBuffer = new byte[bufferSize];
 		mCamera.addCallbackBuffer(mCameraBuffer);
 		surfaceHolder.addCallback(new SurfaceHolder.Callback() {
@@ -191,7 +191,7 @@ public class CameraCompat {
 
 			@Override
 			public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+				// do nothing
 			}
 
 			@Override
@@ -203,7 +203,8 @@ public class CameraCompat {
 	}
 
 	public interface PreviewCallback {
-		void onWindowSizeChange(int width, int height);
+
+		void onConfigChange(int width, int height, int format);
 
 		void onPreviewFrame(byte[] data);
 	}

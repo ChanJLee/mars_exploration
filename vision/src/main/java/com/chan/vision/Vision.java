@@ -1,13 +1,9 @@
 package com.chan.vision;
 
-import android.media.MediaCodec;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 import com.chan.vision.camera.CameraCompat;
 import com.chan.vision.encode.VideoEncoder;
-
-import java.nio.ByteBuffer;
 
 /**
  * Created by chan on 2017/12/17.
@@ -17,7 +13,7 @@ public class Vision {
 	private static final String TAG = "vision";
 
 	private VideoEncoder mVideoEncoder;
-	private VisionCallback mVisionCallback;
+	private Listener mListener;
 	private SurfaceHolder mSurfaceHolder;
 	private int mWidth;
 	private int mHeight;
@@ -30,9 +26,9 @@ public class Vision {
 		mVideoEncoder = new VideoEncoder();
 		mVideoEncoder.setCallback(new VideoEncoder.Callback() {
 			@Override
-			public void onEncoded(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo) {
-				if (mVisionCallback != null) {
-					mVisionCallback.onPreview(byteBuffer, bufferInfo);
+			public void onEncoded(byte[] data, int offset, int len) {
+				if (mListener != null) {
+					mListener.onPreview(data, offset, len);
 				}
 			}
 		});
@@ -44,9 +40,11 @@ public class Vision {
 			camera.open();
 			camera.setPreviewCallback(new CameraCompat.PreviewCallback() {
 				@Override
-				public void onWindowSizeChange(int width, int height) {
-					mVideoEncoder.setWindowSize(width, height);
-					mVideoEncoder.start();
+				public void onConfigChange(int width, int height, int format) {
+					mVideoEncoder.setEncodeParameters(width, height, format);
+					if (mListener != null) {
+						mListener.onWindowSizeChanged(width, height);
+					}
 				}
 
 				@Override
@@ -56,13 +54,13 @@ public class Vision {
 			});
 			camera.startPreview(mSurfaceHolder, mWidth, mHeight);
 
-			if (mVisionCallback != null) {
-				mVisionCallback.onStart();
+			if (mListener != null) {
+				mListener.onStart();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (mVisionCallback != null) {
-				mVisionCallback.onError(e);
+			if (mListener != null) {
+				mListener.onError(e);
 			}
 		}
 	}
@@ -70,25 +68,23 @@ public class Vision {
 	public void release() {
 		CameraCompat.getInstance().release();
 		mVideoEncoder.release();
-		if (mVisionCallback != null) {
-			mVisionCallback.onRelease();
+		if (mListener != null) {
+			mListener.onRelease();
 		}
 	}
 
-	public void setVisionCallback(VisionCallback visionCallback) {
-		mVisionCallback = visionCallback;
+	public void setListener(Listener listener) {
+		mListener = listener;
 	}
 
-	private static void d(String msg) {
-		Log.d(TAG, msg);
-	}
-
-	public interface VisionCallback {
+	public interface Listener {
 		void onError(Throwable error);
 
 		void onStart();
 
-		void onPreview(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo);
+		void onWindowSizeChanged(int width, int height);
+
+		void onPreview(byte[] data, int offset, int len);
 
 		void onRelease();
 	}

@@ -29,5 +29,13 @@ public abstract class Package {
 		}
 	}
 
+	public short getType() {
+		return mType;
+	}
+
+	public int getLen() {
+		return mLen;
+	}
+
 	protected abstract void writeData(OutputStream outputStream) throws IOException;
 }

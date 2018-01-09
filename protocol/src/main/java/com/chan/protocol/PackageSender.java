@@ -62,7 +62,7 @@ public class PackageSender {
 		mPort = port;
 	}
 
-	void start() {
+	public void start() {
 		mReadHandler = new Handler(Looper.getMainLooper()) {
 			@Override
 			public void handleMessage(Message msg) {
@@ -184,7 +184,7 @@ public class PackageSender {
 		mWriteHandler.sendMessage(message);
 	}
 
-	private void release() {
+	public void release() {
 		mInitThread.interrupt();
 		mInitThread = null;
 

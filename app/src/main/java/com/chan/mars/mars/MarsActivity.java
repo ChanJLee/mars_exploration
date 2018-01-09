@@ -2,7 +2,6 @@ package com.chan.mars.mars;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaCodec;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,15 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.chan.mars.R;
+import com.chan.protocol.PackageSender;
 import com.chan.vision.Vision;
-
-import java.nio.ByteBuffer;
 
 public class MarsActivity extends AppCompatActivity implements View.OnClickListener {
 
 	private EditText mEtAddress;
 	private Button mBtnLive;
 	private Vision mVision;
+	private PackageSender mSender;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +31,23 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 		mBtnLive.setOnClickListener(this);
 
 		SurfaceView surfaceView = findViewById(R.id.camera);
+
+		mSender = new PackageSender("192.168.0.100", 8765);
+		mSender.setListener(new PackageSender.Listener() {
+			@Override
+			public void onReceiveData(int type, byte[] data) {
+
+			}
+
+			@Override
+			public void onError(Throwable throwable) {
+				d("send message error");
+			}
+		});
+		mSender.start();
+
 		mVision = new Vision(surfaceView.getHolder(), 320, 160);
-		mVision.setVisionCallback(new Vision.VisionCallback() {
+		mVision.setListener(new Vision.Listener() {
 			@Override
 			public void onError(Throwable error) {
 				d("error");
@@ -45,21 +59,43 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 			}
 
 			@Override
-			public void onPreview(ByteBuffer byteBuffer, MediaCodec.BufferInfo bufferInfo) {
-				d("preview");
+			public void onWindowSizeChanged(int width, int height) {
+				if (mSender != null) {
+					mSender.sendWindowSize(width, height);
+				}
+			}
+
+			@Override
+			public void onPreview(byte[] data, int offset, int len) {
+				if (mSender != null) {
+					mSender.sendImage(data, offset, len);
+				}
 			}
 
 			@Override
 			public void onRelease() {
 				d("release");
+				if (mSender != null) {
+					mSender.release();
+					mSender = null;
+				}
 			}
 		});
+
 		mVision.start();
 	}
 
 	@Override
 	protected void onDestroy() {
-		mVision.release();
+		if (mVision != null) {
+			mVision.release();
+			mVision = null;
+		}
+
+		if (mSender != null) {
+			mSender.release();
+			mSender = null;
+		}
 		super.onDestroy();
 	}
 
