@@ -7,12 +7,12 @@ import java.io.OutputStream;
  * Created by chan on 2018/1/8.
  */
 
-public class WindowChangePackge extends Package {
+public class WindowSizePackage extends Package {
 	private int mWidth;
 	private int mHeight;
 
-	public WindowChangePackge(int width, int height) {
-		super((short) 2, 8);
+	public WindowSizePackage(int width, int height) {
+		super(PackageType.TYPE_WINDOW_SIZE, 8);
 		mWidth = width;
 		mHeight = height;
 	}

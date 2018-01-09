@@ -5,14 +5,11 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.IntRange;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.net.Socket;
 
 /**
@@ -98,16 +95,14 @@ public class PackageSender {
 			@Override
 			@SuppressLint("DefaultLocale")
 			public void handleMessage(Message msg) {
-				String type = String.format("%02d", msg.what);
-				byte[] data = (byte[]) msg.obj;
 				try {
-					outputStream.write(MAGIC_HEADER);
-					outputStream.write(type.getBytes());
-					outputStream.write(String.format("%010d", data.length).getBytes());
-					outputStream.write(data);
-					outputStream.flush();
+					Package pkg = (Package) msg.obj;
+					pkg.writeData(outputStream);
 				} catch (IOException e) {
 					e.printStackTrace();
+					if (mListener != null) {
+						mListener.onError(e);
+					}
 				}
 			}
 		};
@@ -149,7 +144,9 @@ public class PackageSender {
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
-					//TODO
+					if (mListener != null) {
+						mListener.onError(e);
+					}
 				}
 			}
 		});
@@ -165,28 +162,25 @@ public class PackageSender {
 		return true;
 	}
 
-	@IntRange(from = 0, to = 99)
-	@Retention(RetentionPolicy.SOURCE)
-	public @interface Type {
-
-	}
 
 	public void sendImage(byte[] data, int offset, int len) {
-
+		ImagePackage imagePackage = new ImagePackage(data, offset, len);
+		sendPackage(imagePackage);
 	}
 
 	public void sendWindowSize(int width, int height) {
-
+		WindowSizePackage windowSizePackage = new WindowSizePackage(width, height);
+		sendPackage(windowSizePackage);
 	}
 
-	public void write(@Type int type, byte[] data) {
-		if (type < 0 || type >= 100 || data == null) {
-			return;
-		}
+	public void sendHeartBeat() {
+		HeartBeatPackage heartBeatPackage = new HeartBeatPackage();
+		sendPackage(heartBeatPackage);
+	}
 
+	private void sendPackage(Package pkg) {
 		Message message = mWriteHandler.obtainMessage();
-		message.what = type;
-		message.obj = data;
+		message.obj = pkg;
 		mWriteHandler.sendMessage(message);
 	}
 

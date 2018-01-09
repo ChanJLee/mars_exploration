@@ -13,8 +13,8 @@ public abstract class Package {
 	private short mType;
 	private int mLen;
 
-	public Package(short type, int len) {
-		mType = type;
+	public Package(@PackageType.Type int type, int len) {
+		mType = (short) type;
 		mLen = len;
 	}
 
