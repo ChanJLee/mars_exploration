@@ -17,12 +17,7 @@ import java.net.Socket;
  */
 
 public class PackageSender {
-	private static final byte[] MAGIC_HEADER = {0x05, 0x21, 0x05, 0x25, 0x00};
-	/*
-	 * magic number len 5B
-	 * */
-	private static final int MAGIC_LEN = 5;
-
+	private static final byte[] MAGIC_HEADER = {0x05, 0x21, 0x05, 0x25, 0x12, 0x12, 0x01, 0x18,};
 	/*
 	 * type len, 2B
 	 * */
@@ -31,7 +26,7 @@ public class PackageSender {
 	/*
 	 * package len 10B
 	 * */
-	private static final int PACKAGE_LEN = 10;
+	private static final int PACKAGE_LEN = 4;
 
 	/*
 	 * mata data len 12B
@@ -41,7 +36,7 @@ public class PackageSender {
 	/*
 	 * head len
 	 * */
-	private static final int HEADER_LEN = MAGIC_LEN + META_DATA_LEN;
+	private static final int HEADER_LEN = MAGIC_HEADER.length + META_DATA_LEN;
 
 	private String mHost;
 	private int mPort;
@@ -123,8 +118,8 @@ public class PackageSender {
 						if (segmentLen >= HEADER_LEN) {
 							if (isMagicHeader(buffer)) {
 
-								currentType = Integer.parseInt(new String(buffer, MAGIC_LEN, TYPE_LEN));
-								currentLen = Integer.parseInt(new String(buffer, MAGIC_LEN + TYPE_LEN, PACKAGE_LEN));
+								currentType = Integer.parseInt(new String(buffer, MAGIC_HEADER.length, TYPE_LEN));
+								currentLen = Integer.parseInt(new String(buffer, MAGIC_HEADER.length + TYPE_LEN, PACKAGE_LEN));
 								// init buffer
 								byteArrayOutputStream.reset();
 								cached_len = segmentLen - HEADER_LEN;
