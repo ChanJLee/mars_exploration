@@ -1,7 +1,5 @@
 package com.chan.vision.encode;
 
-import android.graphics.ImageFormat;
-
 /**
  * Created by chan on 2017/12/17.
  */
@@ -29,7 +27,7 @@ public class VideoEncoder {
 	}
 
 	public void setEncodeParameters(int width, int height, int format) {
-		mYLen = (int) (width * height * ImageFormat.getBitsPerPixel(format) / 8.0f);
+		mYLen = width * height;
 	}
 
 	public interface Callback {

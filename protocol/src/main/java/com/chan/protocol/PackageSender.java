@@ -5,19 +5,24 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by chan on 2018/1/4.
  */
 
 public class PackageSender {
-	private static final byte[] MAGIC_HEADER = {0x05, 0x21, 0x05, 0x25, 0x12, 0x12, 0x01, 0x18,};
+	private static final byte[] MAGIC_HEADER = {0x05, 0x21, 0x05, 0x25, 0x12, 0x12, 0x01, 0x18};
 	/*
 	 * type len, 2B
 	 * */
@@ -49,6 +54,8 @@ public class PackageSender {
 
 	private Handler mWriteHandler;
 	private Handler mReadHandler;
+	private CountDownLatch mCountDownLatch;
+	private List<Package> mPool = new ArrayList<>();
 
 	private Listener mListener;
 
@@ -72,10 +79,18 @@ public class PackageSender {
 			public void run() {
 				try {
 					mSocket = new Socket(mHost, mPort);
+					mCountDownLatch = new CountDownLatch(2);
 					writeOutputStream(mSocket.getOutputStream());
 					readInputStream(mSocket.getInputStream());
-				} catch (IOException e) {
+					mCountDownLatch.await();
+					if (mListener != null) {
+						mListener.onConnected();
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
+					if (mListener != null) {
+						mListener.onError(e);
+					}
 				}
 			}
 		});
@@ -91,8 +106,15 @@ public class PackageSender {
 			@SuppressLint("DefaultLocale")
 			public void handleMessage(Message msg) {
 				try {
+					Iterator<Package> iterator = mPool.iterator();
+					while (iterator.hasNext()) {
+						iterator.next().writeData(outputStream);
+						iterator.remove();
+					}
+
 					Package pkg = (Package) msg.obj;
 					pkg.writeData(outputStream);
+					d("type: " + pkg.getType());
 				} catch (IOException e) {
 					e.printStackTrace();
 					if (mListener != null) {
@@ -101,6 +123,7 @@ public class PackageSender {
 				}
 			}
 		};
+		mCountDownLatch.countDown();
 	}
 
 	private void readInputStream(final InputStream inputStream) {
@@ -113,6 +136,7 @@ public class PackageSender {
 				int cached_len = 0;
 				int currentLen = 0;
 				int currentType = 0;
+				mCountDownLatch.countDown();
 				try {
 					while ((segmentLen = inputStream.read(buffer)) != -1) {
 						if (segmentLen >= HEADER_LEN) {
@@ -174,23 +198,36 @@ public class PackageSender {
 	}
 
 	private void sendPackage(Package pkg) {
+		if (mWriteHandler == null && pkg.getType() == PackageType.TYPE_WINDOW_SIZE) {
+			mPool.add(pkg);
+			return;
+		}
+
 		Message message = mWriteHandler.obtainMessage();
 		message.obj = pkg;
 		mWriteHandler.sendMessage(message);
 	}
 
 	public void release() {
-		mInitThread.interrupt();
-		mInitThread = null;
+		if (mInitThread != null) {
+			mInitThread.interrupt();
+			mInitThread = null;
+		}
 
-		mReadThread.interrupt();
-		mReadThread = null;
+		if (mReadThread != null) {
+			mReadThread.interrupt();
+			mReadThread = null;
+		}
 
-		mWriteThread.interrupt();
-		mWriteThread = null;
+		if (mWriteThread != null) {
+			mWriteThread.interrupt();
+			mWriteThread = null;
+		}
 
 		try {
-			mSocket.close();
+			if (mSocket != null) {
+				mSocket.close();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -200,7 +237,13 @@ public class PackageSender {
 		mListener = listener;
 	}
 
+	private static void d(String msg) {
+		Log.d("PackageSender", msg);
+	}
+
 	public interface Listener {
+		void onConnected();
+
 		void onReceiveData(int type, byte[] data);
 
 		void onError(Throwable throwable);

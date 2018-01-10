@@ -20,6 +20,7 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 	private Button mBtnLive;
 	private Vision mVision;
 	private PackageSender mSender;
+	private SurfaceView mSurfaceView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +31,17 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 		mEtAddress = findViewById(R.id.address);
 		mBtnLive.setOnClickListener(this);
 
-		SurfaceView surfaceView = findViewById(R.id.camera);
+		mSurfaceView = findViewById(R.id.camera);
 
-		mSender = new PackageSender("192.168.0.100", 8765);
+		mSender = new PackageSender("192.168.0.102", 8765);
 		mSender.setListener(new PackageSender.Listener() {
 			@Override
-			public void onReceiveData(int type, byte[] data) {
+			public void onConnected() {
+			}
 
+			@Override
+			public void onReceiveData(int type, byte[] data) {
+				d("receive " + type);
 			}
 
 			@Override
@@ -45,8 +50,7 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 			}
 		});
 		mSender.start();
-
-		mVision = new Vision(surfaceView.getHolder(), 320, 160);
+		mVision = new Vision(mSurfaceView.getHolder(), 320, 160);
 		mVision.setListener(new Vision.Listener() {
 			@Override
 			public void onError(Throwable error) {
