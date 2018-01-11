@@ -21,7 +21,7 @@ import java.util.concurrent.CountDownLatch;
  * Created by chan on 2018/1/4.
  */
 
-public class PackageSender {
+public class MarsServer {
 	private static final byte[] MAGIC_HEADER = {0x05, 0x21, 0x05, 0x25, 0x12, 0x12, 0x01, 0x18};
 	/*
 	 * type len, 2B
@@ -59,7 +59,7 @@ public class PackageSender {
 
 	private Listener mListener;
 
-	public PackageSender(String host, int port) {
+	public MarsServer(String host, int port) {
 		mHost = host;
 		mPort = port;
 	}
@@ -69,7 +69,7 @@ public class PackageSender {
 			@Override
 			public void handleMessage(Message msg) {
 				if (mListener != null) {
-					mListener.onReceiveData(msg.what, (byte[]) msg.obj);
+					//mListener.onReceiveData(msg.what, (byte[]) msg.obj);
 				}
 			}
 		};
@@ -98,7 +98,7 @@ public class PackageSender {
 	}
 
 	private void writeOutputStream(final OutputStream outputStream) {
-		mWriteThread = new HandlerThread("PackageSender");
+		mWriteThread = new HandlerThread("MarsServer");
 		mWriteThread.start();
 		mWriteHandler = new Handler(mWriteThread.getLooper()) {
 
@@ -133,7 +133,7 @@ public class PackageSender {
 				byte[] buffer = new byte[128];
 				int segmentLen = -1;
 				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				int cached_len = 0;
+				int cachedLen = 0;
 				int currentLen = 0;
 				int currentType = 0;
 				mCountDownLatch.countDown();
@@ -146,15 +146,15 @@ public class PackageSender {
 								currentLen = Integer.parseInt(new String(buffer, MAGIC_HEADER.length + TYPE_LEN, PACKAGE_LEN));
 								// init buffer
 								byteArrayOutputStream.reset();
-								cached_len = segmentLen - HEADER_LEN;
-								byteArrayOutputStream.write(buffer, HEADER_LEN, cached_len);
+								cachedLen = segmentLen - HEADER_LEN;
+								byteArrayOutputStream.write(buffer, HEADER_LEN, cachedLen);
 								continue;
 							}
 						}
 
 						byteArrayOutputStream.write(buffer, 0, segmentLen);
-						cached_len += segmentLen;
-						if (cached_len >= currentLen) {
+						cachedLen += segmentLen;
+						if (cachedLen >= currentLen) {
 							Message message = mReadHandler.obtainMessage();
 							message.what = currentType;
 							message.obj = byteArrayOutputStream.toByteArray();
@@ -198,8 +198,10 @@ public class PackageSender {
 	}
 
 	private void sendPackage(Package pkg) {
-		if (mWriteHandler == null && pkg.getType() == PackageType.TYPE_WINDOW_SIZE) {
-			mPool.add(pkg);
+		if (mWriteHandler == null) {
+			if (pkg.getType() == PackageType.TYPE_WINDOW_SIZE) {
+				mPool.add(pkg);
+			}
 			return;
 		}
 
@@ -238,13 +240,13 @@ public class PackageSender {
 	}
 
 	private static void d(String msg) {
-		Log.d("PackageSender", msg);
+		Log.d("MarsServer", msg);
 	}
 
 	public interface Listener {
 		void onConnected();
 
-		void onReceiveData(int type, byte[] data);
+		void onReceiveAction(@Action.ActionType int action);
 
 		void onError(Throwable throwable);
 	}

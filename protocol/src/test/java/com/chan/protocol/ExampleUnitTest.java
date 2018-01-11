@@ -12,6 +12,10 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
 	@Test
 	public void addition_isCorrect() throws Exception {
-		assertEquals(4, 2 + 2);
+		MarsServer marsServer = new MarsServer("192.168.0.102", 8765);
+		marsServer.sendHeartBeat();
+		marsServer.sendImage(new byte[1], 0, 1);
+		marsServer.sendWindowSize(100, 200);
+		marsServer.start();
 	}
 }
