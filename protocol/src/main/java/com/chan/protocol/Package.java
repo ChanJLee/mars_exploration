@@ -10,6 +10,7 @@ import java.io.OutputStream;
 
 public abstract class Package {
 	private static final byte[] MAGIC_HEADER = {0x05, 0x21, 0x05, 0x25, 0x12, 0x12, 0x01, 0x18};
+	private static final byte[] PADDING = {0x00, 0x00};
 	private short mType;
 	private int mLen;
 	private ByteArrayOutputStream mByteArrayOutputStream = new ByteArrayOutputStream();
@@ -19,14 +20,15 @@ public abstract class Package {
 		mLen = len;
 	}
 
-	public void write(OutputStream os) {
+	final public void write(OutputStream os) {
 		try {
 			mByteArrayOutputStream.reset();
-			os.write(MAGIC_HEADER);
-			os.write(short2Bytes(mType));
-			os.write(int2Bytes(mLen));
+			mByteArrayOutputStream.write(MAGIC_HEADER);
+			mByteArrayOutputStream.write(short2Bytes(mType));
+			mByteArrayOutputStream.write(PADDING);
+			mByteArrayOutputStream.write(int2Bytes(mLen));
 			writeData(mByteArrayOutputStream);
-			mByteArrayOutputStream.writeTo(os);
+			os.write(mByteArrayOutputStream.toByteArray());
 			os.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,17 +45,17 @@ public abstract class Package {
 
 	private byte[] short2Bytes(short value) {
 		byte[] bytes = new byte[2];
-		bytes[0] = (byte) (value >> 8);
-		bytes[1] = (byte) value;
+		bytes[0] = (byte) (value & 0xff);
+		bytes[1] = (byte) ((value >> 8) & 0xff);
 		return bytes;
 	}
 
 	private byte[] int2Bytes(int value) {
 		byte[] bytes = new byte[4];
-		bytes[0] = (byte) (value >> 24);
-		bytes[1] = (byte) (value >> 16);
-		bytes[2] = (byte) (value >> 8);
-		bytes[3] = (byte) (value);
+		bytes[0] = (byte) (value & 0xff);
+		bytes[1] = (byte) ((value >> 8) & 0xff);
+		bytes[2] = (byte) ((value >> 16) & 0xff);
+		bytes[3] = (byte) ((value >> 24) & 0xff);
 		return bytes;
 	}
 

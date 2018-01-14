@@ -87,7 +87,7 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 //		});
 //
 //		mVision.start();
-		final MarsServer marsServer = new MarsServer("192.168.0.102", 7654);
+		final MarsServer marsServer = new MarsServer("192.168.0.102", 8765);
 		marsServer.setListener(new MarsServer.Listener() {
 			@Override
 			public void onConnected() {

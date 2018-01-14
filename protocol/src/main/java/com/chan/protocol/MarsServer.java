@@ -113,7 +113,7 @@ public class MarsServer {
 					}
 
 					Package pkg = (Package) msg.obj;
-					pkg.writeData(outputStream);
+					pkg.write(outputStream);
 					d("type: " + pkg.getType());
 				} catch (IOException e) {
 					e.printStackTrace();
