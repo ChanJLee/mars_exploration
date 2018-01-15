@@ -18,4 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="开始"/>
+
+    <Button
+        android:id="@+id/blue_tooth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="蓝牙"/>
 </LinearLayout>

@@ -2,8 +2,8 @@ package com.chan.mars.misc;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,6 +14,7 @@ public class DispatchActivity extends AppCompatActivity implements View.OnClickL
 
 	private Button mBtnCheckHardware;
 	private Button mBtnStart;
+	private Button mBtnBlueTooth;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,9 @@ public class DispatchActivity extends AppCompatActivity implements View.OnClickL
 
 		mBtnStart = findViewById(R.id.start);
 		mBtnStart.setOnClickListener(this);
+
+		mBtnBlueTooth = findViewById(R.id.blue_tooth);
+		mBtnBlueTooth.setOnClickListener(this);
 	}
 
 	@Override
@@ -33,6 +37,8 @@ public class DispatchActivity extends AppCompatActivity implements View.OnClickL
 			startActivity(CheckActivity.createIntent(this));
 		} else if (v == mBtnStart) {
 			startActivity(MarsActivity.createIntent(this));
+		} else {
+			startActivity(BlueToothActivity.createIntent(this));
 		}
 	}
 

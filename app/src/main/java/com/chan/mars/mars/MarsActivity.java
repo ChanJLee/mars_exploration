@@ -33,65 +33,10 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 
 		mSurfaceView = findViewById(R.id.camera);
 
-//		mSender = new MarsServer("192.168.0.102", 8765);
-//		mSender.setListener(new MarsServer.Listener() {
-//			@Override
-//			public void onConnected() {
-//			}
-//
-//			@Override
-//			public void onReceiveAction(int action) {
-//
-//			}
-//
-//			@Override
-//			public void onError(Throwable throwable) {
-//				d("send message error");
-//			}
-//		});
-//		mSender.start();
-//		mVision = new Vision(mSurfaceView.getHolder(), 320, 160);
-//		mVision.setListener(new Vision.Listener() {
-//			@Override
-//			public void onError(Throwable error) {
-//				d("error");
-//			}
-//
-//			@Override
-//			public void onStart() {
-//				d("start");
-//			}
-//
-//			@Override
-//			public void onWindowSizeChanged(int width, int height) {
-//				if (mSender != null) {
-//					mSender.sendWindowSize(width, height);
-//				}
-//			}
-//
-//			@Override
-//			public void onPreview(byte[] data, int offset, int len) {
-//				if (mSender != null) {
-//					mSender.sendImage(data, offset, len);
-//				}
-//			}
-//
-//			@Override
-//			public void onRelease() {
-//				d("release");
-//				if (mSender != null) {
-//					mSender.release();
-//					mSender = null;
-//				}
-//			}
-//		});
-//
-//		mVision.start();
-		final MarsServer marsServer = new MarsServer("192.168.0.102", 8765);
-		marsServer.setListener(new MarsServer.Listener() {
+		mSender = new MarsServer("192.168.0.102", 8765);
+		mSender.setListener(new MarsServer.Listener() {
 			@Override
 			public void onConnected() {
-				findViewById(R.id.send).setEnabled(true);
 			}
 
 			@Override
@@ -101,17 +46,47 @@ public class MarsActivity extends AppCompatActivity implements View.OnClickListe
 
 			@Override
 			public void onError(Throwable throwable) {
-
+				d("send message error");
 			}
 		});
-		marsServer.start();
-
-		findViewById(R.id.send).setOnClickListener(new View.OnClickListener() {
+		mSender.start();
+		mVision = new Vision(mSurfaceView.getHolder(), 320, 160);
+		mVision.setListener(new Vision.Listener() {
 			@Override
-			public void onClick(View v) {
-				marsServer.sendWindowSize(100, 200);
+			public void onError(Throwable error) {
+				d("error");
+			}
+
+			@Override
+			public void onStart() {
+				d("start");
+			}
+
+			@Override
+			public void onWindowSizeChanged(int width, int height) {
+				if (mSender != null) {
+					mSender.sendWindowSize(width, height);
+				}
+			}
+
+			@Override
+			public void onPreview(byte[] data, int offset, int len) {
+				if (mSender != null) {
+					mSender.sendImage(data, offset, len);
+				}
+			}
+
+			@Override
+			public void onRelease() {
+				d("release");
+				if (mSender != null) {
+					mSender.release();
+					mSender = null;
+				}
 			}
 		});
+
+		mVision.start();
 	}
 
 	@Override
